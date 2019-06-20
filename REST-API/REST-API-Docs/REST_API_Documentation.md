@@ -170,6 +170,8 @@ If you are looking for documentation about creating Payment Schedules with Payme
     {
       "action" : "createPaymentMethod",
       "paymentGatewayId" : "a0141000001jhoh",
+      "email" : "someone@blackthorn.io",
+      "isDefault" : true,
       "stripePayload" : "{\"id\":\"tok_19AkExDXJoGaqeOAHLrQSufI\",\"object\":\"token\",\"card\":{\"id\":\"card_19AkExDXJoGaqeOA9NDGpROK\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"cvc_check\":\"unchecked\",\"dynamic_last4\":null,\"exp_month\":11,\"exp_year\":2019,\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":{},\"name\":\"sdada\",\"tokenization_method\":null},\"client_ip\":\"188.143.37.52\",\"created\":1477937435,\"livemode\":false,\"type\":\"card\",\"used\":false}"
     }
     ```
@@ -329,6 +331,7 @@ Parameters:
 * __publishableKey__ : optional. Instead of __paymentGatewayId__ you can provide this property of the Payment Gateway.
 * __stripePayload__ : required. String representation value of the JSON object returned by stripe.js
 * __email__ : optional. The customer's email. If provided, this email is set on the newly created Stripe Customer.
+* __isDefault__ : optional. If set = true, this Payment Method will be marked as the default Payment Method.
 * __contactId__ : optional. The customer's Contact id. The Payment Method will be linked to this Contact.
 * __accountId__ : optional. The customer's Account id. The Payment Method will be linked to this Account.
 * __customerId__ : optional. The customer's Stripe Customer id. The Payment Method will be linked to this Stripe Customer, so no new Stripe Customer is created. The Stripe Customer should exist on the same Payment Gateway that you are using in this call.
