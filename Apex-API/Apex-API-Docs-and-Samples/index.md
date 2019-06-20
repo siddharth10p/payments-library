@@ -84,6 +84,14 @@ try {
 	pm.cardExpMonth = '12';
 	pm.cvv = '555';
 
+	pm.email = 'hello@blackthorn.io';
+	pm.street = '1060 W Addison Ave';
+	pm.city = 'Chicago';
+	pm.state = 'IL';
+	pm.postalCode = '62808';
+	pm.country = 'US';
+	pm.defaultpm = true;
+
 	// this method creates a Payment Method in Stripe but does not yet create a Payment Method in SF
 	pm.registerPM();
 
