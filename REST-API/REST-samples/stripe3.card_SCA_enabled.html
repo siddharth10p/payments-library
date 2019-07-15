@@ -1,0 +1,116 @@
+<html>
+<body>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://js.stripe.com/v3/"></script>
+
+	<h1>stripe.js v3 Absolut minimun; card flow</h1>
+	<div>
+	For more info read <a href="https://stripe.com/docs/stripe.js?">https://stripe.com/docs/stripe.js?</a>
+	</div>
+
+	<div>
+		<input id="pub-key" value="pk_test_7mhkgak8RTU4T6zE5VEn5VSe00fL6CwYMO"/>
+	</div>
+
+	<div>
+		<input id="endpoint" value="https://sandbox-javisst-developer-edition.cs45.force.com/x/services/apexrest/v1/primary"/>
+	</div>
+
+
+	<div id="card-element"></div>
+
+	<div>
+		<input id="holder-name" placeholder="Holder Name" />
+	</div>
+
+	<div>
+		<input id="holder-email" placeholder="Holder Email" />
+	</div>
+
+
+	<div>
+		<button onclick="submit()">Submit</button>
+	</div>
+
+	<script>
+
+		var endpoint = $('#endpoint').val();
+ 		var publishableKey = $('#pub-key').val();
+		var amount = 78;
+
+		var stripe = Stripe(publishableKey);
+
+		var e = stripe.elements();
+		var card = e.create('card');
+		card.mount('#card-element');
+
+		function submit() {
+			stripe.createToken(card, {name : $('#holder-name').val() })
+				.then(function(r) {
+					if (r.token) {
+						sendTokenToEndpoint(r.token);
+					}
+				});
+		}	
+
+		function sendTokenToEndpoint(stripeResponse) {
+
+			console.log("stripeResponse", stripeResponse);
+
+			var d = {
+				stripePayload : JSON.stringify(stripeResponse),
+			 	action : "createPaymentMethod",
+			 	publishableKey : publishableKey,
+			 	transactionList : [
+			 		{
+			 			"amount" : amount
+			 		}
+			 	],
+			 	email : $('#holder-email').val()
+		 	};		
+
+		 	console.log('### d:', d);
+
+			$.ajax({
+				type : 'POST',
+				url : endpoint,
+				headers : {
+					"content-type": "text/plain"
+				},
+				data : JSON.stringify(d),
+				success : salesforceCallback
+			}); 
+		};
+
+		function salesforceCallback(r) {
+			if (r.success == true) {
+				if (r.scaRequired != true) {
+					alert('We are done!');
+				} else {
+					authorizeCard(r.paymentMethodList[0].stripeId, r.clientSecret);
+				}
+			}
+		}	
+
+		function authorizeCard(pmId, clientSecret) {
+			stripe.handleCardPayment(
+				clientSecret,	// first parameter : the pi's client secret
+				{
+					payment_method: pmId // second param : pm's id (from Stripe)
+				}
+			).then(function(result) {
+				if (result.error) {
+					console.log('result.error', result.error);
+				} else {
+					console.log('success', result);
+				}
+			});
+		}
+
+
+	</script>
+
+
+</body>
+</html>
