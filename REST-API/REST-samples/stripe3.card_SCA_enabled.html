@@ -10,11 +10,12 @@
 	</div>
 
 	<div>
-		<input id="pub-key" value="pk_test_7mhkgak8RTU4T6zE5VEn5VSe00fL6CwYMO"/>
+		<input id="pub-key" value="pk_test_6Xv6pJ2DMJJUlpEyEeDg3coj00KSyMSbFz"/>
 	</div>
 
 	<div>
-		<input id="endpoint" value="https://sandbox-javisst-developer-edition.cs45.force.com/x/services/apexrest/v1/primary"/>
+		<input id="endpoint" value="https://sandbox-jhhhhnnnn-ccnncncd-ds2-developer-edition.cs79.force.com/x/services/apexrest/v1/primary
+"/>
 	</div>
 
 
@@ -28,6 +29,11 @@
 		<input id="holder-email" placeholder="Holder Email" />
 	</div>
 
+	<div>
+		Auth only
+		<input id="auth-only" type="checkbox" />
+	</div>
+
 
 	<div>
 		<button onclick="submit()">Submit</button>
@@ -38,7 +44,8 @@
 		var endpoint = $('#endpoint').val();
  		var publishableKey = $('#pub-key').val();
 		var amount = 78;
-
+		var authOnly;
+		
 		var stripe = Stripe(publishableKey);
 
 		var e = stripe.elements();
@@ -46,6 +53,8 @@
 		card.mount('#card-element');
 
 		function submit() {
+			authOnly = document.getElementById('auth-only').checked;
+
 			stripe.createToken(card, {name : $('#holder-name').val() })
 				.then(function(r) {
 					if (r.token) {
@@ -64,13 +73,18 @@
 			 	publishableKey : publishableKey,
 			 	transactionList : [
 			 		{
-			 			"amount" : amount
+			 			"amount" : amount,
+			 			"currencyISO" : "USD",
+			 			"authOnly" : authOnly
 			 		}
 			 	],
 			 	email : $('#holder-email').val()
 		 	};		
 
 		 	console.log('### d:', d);
+
+		 	// console.log('### payload serizalized');
+		 	// console.log(JSON.stringify(d));
 
 			$.ajax({
 				type : 'POST',
@@ -84,6 +98,7 @@
 		};
 
 		function salesforceCallback(r) {
+			console.log('callback done.', r);
 			if (r.success == true) {
 				if (r.scaRequired != true) {
 					alert('We are done!');
