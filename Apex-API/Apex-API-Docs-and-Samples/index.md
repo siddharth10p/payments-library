@@ -456,8 +456,32 @@ Example 7: Processing multiple transactions
 	} catch (Exception ex) {
 		//do error handling here
 	}
+	
+Example 7: Refund a transaction
 
-Example 7: Error handling and partial commits
+	try {
+	    P360_API_v1.Tra t = P360_API_v1.transactionFactory('a0X2xxxxxxxxx477A');
+	    t.refund();
+
+	    //bt_stripe.P360_API_v1.P360_Exception if something goes wrong with committing records in database
+	    P360_API_v1.commitWork();
+	} catch (Exception ex) {
+	    // Error handling
+	}
+
+Example 8: Partial Refund a transaction
+
+	try {
+	    P360_API_v1.Tra t = P360_API_v1.transactionFactory('a0X2xxxxxxxxx477A');
+	    t.refund(13); // Pass a valid decimal value that you want to refund
+
+	    //bt_stripe.P360_API_v1.P360_Exception if something goes wrong with committing records in database
+	    P360_API_v1.commitWork();
+	} catch (Exception ex) {
+	    // Error handling
+	}
+
+Example 9: Error handling and partial commits
 
 Each `registerCustomer()`, `registerPM()`, `capture()` and `authorize()` call is one webservice callout and is independent of each other. Therefore, its possible to handle errors and perform partial commits to database.
 
@@ -499,17 +523,3 @@ Each `registerCustomer()`, `registerPM()`, `capture()` and `authorize()` call is
 	} catch (Exception ex) {
 		//do error handling here
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
