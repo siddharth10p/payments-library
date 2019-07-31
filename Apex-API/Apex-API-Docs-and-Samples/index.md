@@ -250,9 +250,9 @@ Creates a Tra class from an existing SOQL **bt_stripe__Transaction__c** object.
 
 * `capture()` Captures a new or existing open/authorized transaction. Throws exception if the transaction is already captured.
 
-* `refund()` For making full refund on captured transactions. Need to implement.
+* `refund()` For making full refund on captured transactions. Create a tra class instance using SOQL `bt_stripe.P360_API_v1.Tra t = bt_stripe.P360_API_v1.transactionFactory(transId);`. The transId is a captured transaction Id. Then, call `t.refund()` method and lastly use `P360_API_v1.commitWork()` to commit the changes in Salesforce. See the example #7 below to view the code sample.
 
-* `refundAmount(Decimal refundAmount)` For making partial refund on captured transactions. Need to implement.
+* `refundAmount(Decimal refundAmount)` For making partial refund on captured transactions. Create a tra class instance using SOQL `bt_stripe.P360_API_v1.Tra t = bt_stripe.P360_API_v1.transactionFactory(transId);`. The transId is a captured transaction Id. Then, call `t.refund(Decimal refundAmount)` method  and lastly use `P360_API_v1.commitWork()` to commit the changes in Salesforce. See the example #8 below to view the code sample.
 
 * `setParent(Schema.SObjectField field, Object value)` For associating a transaction record to a parent SObject record. Need to implement.
 
@@ -456,8 +456,32 @@ Example 7: Processing multiple transactions
 	} catch (Exception ex) {
 		//do error handling here
 	}
+	
+Example 7: Refund a transaction
 
-Example 7: Error handling and partial commits
+	try {
+	    P360_API_v1.Tra t = P360_API_v1.transactionFactory('a0X2xxxxxxxxx477A');
+	    t.refund();
+
+	    //bt_stripe.P360_API_v1.P360_Exception if something goes wrong with committing records in database
+	    P360_API_v1.commitWork();
+	} catch (Exception ex) {
+	    // Error handling
+	}
+
+Example 8: Partial Refund a transaction
+
+	try {
+	    P360_API_v1.Tra t = P360_API_v1.transactionFactory('a0X2xxxxxxxxx477A');
+	    t.refund(13); // Pass a valid decimal value that you want to refund
+
+	    //bt_stripe.P360_API_v1.P360_Exception if something goes wrong with committing records in database
+	    P360_API_v1.commitWork();
+	} catch (Exception ex) {
+	    // Error handling
+	}
+
+Example 9: Error handling and partial commits
 
 Each `registerCustomer()`, `registerPM()`, `capture()` and `authorize()` call is one webservice callout and is independent of each other. Therefore, its possible to handle errors and perform partial commits to database.
 
@@ -499,17 +523,3 @@ Each `registerCustomer()`, `registerPM()`, `capture()` and `authorize()` call is
 	} catch (Exception ex) {
 		//do error handling here
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
