@@ -250,9 +250,9 @@ Creates a Tra class from an existing SOQL **bt_stripe__Transaction__c** object.
 
 * `capture()` Captures a new or existing open/authorized transaction. Throws exception if the transaction is already captured.
 
-* `refund()` For making full refund on captured transactions. Create a tra class instance using SOQL `bt_stripe.P360_API_v1.Tra t = bt_stripe.P360_API_v1.transactionFactory(transId);`. The transId is a captured transaction Id. Then, call `t.Refund()` method and lastly use `P360_API_v1.commitWork()` to commit the changes in Salesforce. See the example #7 below to view the code sample.
+* `refund()` For making full refund on captured transactions. Create a tra class instance using SOQL `bt_stripe.P360_API_v1.Tra t = bt_stripe.P360_API_v1.transactionFactory(transId);`. The transId is a captured transaction Id. Then, call `t.refund()` method and lastly use `P360_API_v1.commitWork()` to commit the changes in Salesforce. See the example #7 below to view the code sample.
 
-* `refundAmount(Decimal refundAmount)` For making partial refund on captured transactions. Create a tra class instance using SOQL `bt_stripe.P360_API_v1.Tra t = bt_stripe.P360_API_v1.transactionFactory(transId);`. The transId is a captured transaction Id. Then, call `t.Refund([a decimal value])` method  and lastly use `P360_API_v1.commitWork()` to commit the changes in Salesforce. See the example #8 below to view the code sample.
+* `refundAmount(Decimal refundAmount)` For making partial refund on captured transactions. Create a tra class instance using SOQL `bt_stripe.P360_API_v1.Tra t = bt_stripe.P360_API_v1.transactionFactory(transId);`. The transId is a captured transaction Id. Then, call `t.refund(Decimal refundAmount)` method  and lastly use `P360_API_v1.commitWork()` to commit the changes in Salesforce. See the example #8 below to view the code sample.
 
 * `setParent(Schema.SObjectField field, Object value)` For associating a transaction record to a parent SObject record. Need to implement.
 
