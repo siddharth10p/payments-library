@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Paypal Help: https://developer.paypal.com/docs/checkout/reference/customize-sdk-->
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,15 +6,12 @@
 
 <body>
   <script
-    src="https://www.paypal.com/sdk/js?client-id=sb&merchant-id=PUBTL88TYUYXA">
+    src="https://www.paypal.com/sdk/js?client-id=[blackthorn’s client id]&merchant-id=[your paypal account id]">
   </script>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
   <div id="paypal-button-container"></div>
 
-  <!-- script>
-    paypal.Buttons().render('body');;
-  </script -->
   <script>
   paypal.Buttons({
     createOrder: function(data, actions) {
@@ -23,7 +19,7 @@
         purchase_units: [{
           amount: {
             "currency_code": "USD",
-            "value": "1.25"
+            "value": "1.20"
             }
         }]
       });
@@ -41,7 +37,7 @@
     }
   }).render('#paypal-button-container');
 
-  var endPoint = 'https://test-abc-developer-edition.na91.force.com/services/apexrest/v1';
+  var endPoint = 'htpps://[your_salesforcesite_name]/services/apexrest/bt_stripe/v1';
 
   function callServerApi (paypalResponse) {
     console.log ("paypalResponse", paypalResponse);
@@ -67,5 +63,4 @@
   }
 
 </script>
-
 </body>
